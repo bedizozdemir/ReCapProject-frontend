@@ -2,6 +2,56 @@
     <span class="visually-hidden"> </span>
 </div>
 
+<div class="form-group">
+    <input
+      [(ngModel)]="carFilterText"
+      type="text"
+      class="form-control"
+      id="carFilterText"
+      placeholder="Search for cars"
+    />
+    <small id="emailHelp" class="form-text text-muted"></small>
+  </div>
+  <div *ngIf="carFilterText.length > 2" class="alert alert-primary">
+    Search Key: {{ carFilterText }}
+  </div>
+  
+  <div class="row">
+    <div class="col-md-5">
+      <label class="mr-sm-2" for="inlineFormCustomSelect"> Brands </label>
+      <select class="custom-select custom-select-md mb-3" [(ngModel)]="brandId">
+        <option selected>All Brands</option>
+        <option
+          [value]="brand.brandId"
+          *ngFor="let brand of brands"
+          [selected]="getSelectedBrandId(brand.brandId)"
+        >
+          {{ brand.brandName }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-5">
+      <label class="mr-sm-2" for="inlineFormCustomSelect"> Colors </label>
+      <select class="custom-select custom-select-md mb-3" [(ngModel)]="colorId" aria-placeholder="All Colors">
+        <option
+          *ngFor="let color of colors"
+          [value]="color.colorId"
+          [selected]="getSelectedColorId(color.colorId)"
+        >
+          {{ color.colorName }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2" style="margin-top: 30px; width: 100px">
+      <button
+        class="btn btn-success"
+        routerLink="/cars/filter/{{ brandId }}/{{ colorId }}"
+      >
+        Filter
+      </button>
+    </div>
+  </div>
+
 <table *ngIf="dataLoaded==true" class="table">
     <thead>
         <tr>
@@ -13,12 +63,15 @@
             <th>Description</th>
         </tr>
     </thead>
-    <tr *ngFor="let car of cars">
-        <td>{{car.carId}}</td>
-        <td>{{car.brandName}}</td>
-        <td>{{car.colorName}}</td>
-        <td>{{car.dailyPrice}}</td>
-        <td>{{car.modelYear}}</td>
-        <td>{{car.description}}</td>
-    </tr>
+    <tbody>
+        <tr *ngFor="let car of cars | carFilter:carFilterText">
+            <td>{{car.carId}}</td>
+            <td>{{car.brandName}}</td>
+            <td>{{car.colorName}}</td>
+            <td>{{car.dailyPrice | currency : "TL":true}}</td>
+            <td>{{car.modelYear}}</td>
+            <td>{{car.description}}</td>
+            <td>
+        </tr> 
+    </tbody>
 </table>

@@ -9,17 +9,41 @@ import { ColorService } from 'src/app/services/color.service';
 })
 export class ColorComponent implements OnInit {
   colors:Color[]=[];
+  currentColor:Color;
   dataLoaded=false;
+  colorFilterText="";
 
   constructor(private colorService:ColorService) { }
 
   ngOnInit(): void {
     this.getColors();
   }
+
   getColors(){
     this.colorService.getColors().subscribe((response)=>{
       this.colors=response.data
       this.dataLoaded=true;
     });
+  }
+  
+  setCurrentColor(color:Color){
+    this.currentColor=color;
+  }
+
+  getCurrentColorClass(color:Color){
+    if(color==this.currentColor){
+      return "selected"
+    }
+    else{
+      return " "
+    }
+  }
+  getAllColorClass(){
+    if(!this.currentColor){
+      return "selected"
+    }
+    else{
+      return " "
+    }
   }
 }

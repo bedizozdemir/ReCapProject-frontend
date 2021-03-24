@@ -1,0 +1,39 @@
+<div class="row image-section">
+  <div *ngFor="let image of carImages" class="col-md-4 img-gallery">
+    <img
+      [src]="getImagePath(image.imagePath)"
+      class="img-fluid"
+      [alt]="getImagePath(image.imagePath)"
+    />
+  </div>
+</div>
+
+<ul *ngIf="cars" class="list-group list-group-flush">
+  <li class="list-group-item">Brand Name: {{ cars.brandName }}</li>
+  <li class="list-group-item">Color Name: {{ cars.colorName }}</li>
+  <li class="list-group-item">Model Year: {{ cars.modelYear }}</li>
+  <li class="list-group-item">Daily Price: {{ cars.dailyPrice }} | curency:"TL":true</li>
+</ul>
+
+<div class="btn-goback" style="margin-bottom: 30px">
+  <button
+    type="button"
+    class="btn btn-xs btn-success"
+    style="width: 100px; margin-right: 10px"
+    (click) = "getRentalPage(cars.isRented)"
+  >
+    Rent
+  </button>
+  <button
+    routerLink="/cars"
+    type="button"
+    class="btn btn-xs btn-primary"
+    style="width: 100px; margin-right: 10px;"
+  >
+    Go Back
+  </button>
+  <app-car-update [carForUpdate]="cars"></app-car-update>
+</div>
+<div class="d-grid gap-2 mb-2" *ngIf="isRented == false">
+  <app-rental [carforrental]="cars"></app-rental>
+</div>
